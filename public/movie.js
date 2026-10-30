@@ -8,10 +8,10 @@ async function loadMovieDetails(){
         movieDetails.textContent = 'Kein gültiger Titel ausgewählt';
         return;
     }
-};
+
 
 try {
-    const response = await fetch(`/api/movie-details?id=${movieId}&type=${movieType}`);
+    const response = await fetch(`/api/movie-details?id=${encodeURIComponent(movieId)}&type=${encodeURIComponent(movieType)}`);
     const data = await response.json();
 
     if (!response.ok){
@@ -35,5 +35,8 @@ try {
     console.log('Fehler:', error);
     movieDetails.textContent = 'Verbindung zum Server ist fehlgeschlagen';
 }
+
+
+};
 
 loadMovieDetails();

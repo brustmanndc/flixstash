@@ -158,9 +158,9 @@ app.get('/api/search', async (req, res) => {
 
         const response = await fetch(url, {
                 headers: {
-                        Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
-                         accept: 'application/json'
-                        }
+                    Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+                    accept: 'application/json'
+                    }
         });
 
         if (!response.ok) {
@@ -194,6 +194,50 @@ app.get('/api/search', async (req, res) => {
         });
     }
 });
+
+app.get('/api/movie-details', async (req,res) => {
+    const { id, type } = req.query;
+    
+    if (!id || !['movie', 'tv'].includes(type)) {
+        return res.status(400).json({
+            error: 'Ungültige ID oder Type'
+        });
+    }
+
+    try {
+        const url = new URL(`https://api.themoviedb.org/3/${type}/${id}`);
+
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+                accept: 'application/json'
+            }
+        });
+
+        if (!response.ok){
+            return res.status(response.status).json({
+                error: 'Filmdetails konnten nicht geladen werden'
+            });
+        }
+
+        const entry = await response.json();
+
+        return res.json({
+                id: entry.id,
+                title: entry.title || entry.name,
+                type: entry.media_type,
+                release_date: entry.release_date || entry.first_air_date,
+                overview: entry.overview,
+                poster_path: entry.poster_path
+        });
+    }catch (error){
+        console.log('Fehler beim laden der Details:', error.message);
+
+        return res.status(500).json({
+            error: 'Filmdetails konnten nicht geladen werden'
+        });
+    }
+})
 
 async function startServer() {
     try {

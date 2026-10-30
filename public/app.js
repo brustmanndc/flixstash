@@ -36,6 +36,7 @@ searchForm.addEventListener('submit', async (event) =>  {
 
         data.results.forEach((item) => {
             const resultCard = document.createElement('div');
+            resultCard.classList.add('result-card');
 
             const title = document.createElement('h3');
             title.textContent = item.title;
@@ -51,6 +52,10 @@ searchForm.addEventListener('submit', async (event) =>  {
             
             resultCard.append(title, type, releaseDate, overview);
             searchResults.appendChild(resultCard);
+
+            resultCard.addEventListener('click', () => {
+                location.href = `/movie.html?id=${item.id}&type=${item.type}`;
+            });
         });
 
     } catch (error) {
