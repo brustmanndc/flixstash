@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>FlixStash</title>
+</head>
+<body>
+
+    <main>
+        <h1>Willkommen auf FlixStash</h1>
+        <h2>Konto erstellen</h2>
+        
+        <form id="register-form">
+            <div>
+                <label for="register-username">Benutzername</label>
+                <input type="text" name="username" id="register-username" placeholder="Dein Benutzername" required>
+            </div>
+            <div>
+                <label for="register-email">E-Mail</label>
+                <input type="email" name="email" id="register-email" placeholder="Deine E-Mail Adresse" required>
+            </div>
+            <div>
+                <label for="register-pw">Passwort</label>
+                <input type="password" name="password" id="register-pw" placeholder="Min. 8 Zeichen" minlength="8" required>
+            </div>
+
+            <button type="submit">Registrieren</button>
+        </form>
+
+        <p id="register-message"></p>
+
+        <p>Du hast bereits ein Konto? <a href="/">Zum Login</a></p>
+    </main>
+<script src="register.js"></script>
+</body>
+</html>

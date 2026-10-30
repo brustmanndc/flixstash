@@ -8,22 +8,27 @@
 </head>
 <body>
     <main>
-
         <h2>Willkommen auf FlixStash</h2>
         <p>Watchlist für Filme und Serien</p>
-    
-        
-    <form id="search">
-        <input type="text" id="search-id" placeholder="Filme oder Serie eingeben..." required>
-        <button type="submit">Suchen</button>
-    </form>
 
-    <p id="search-message"></p>
+        <form id="login-form">
+            <div>
+                <label for="login-email">E-Mail</label>
+                <input type="email" name="email" id="login-email" placeholder="Enter E-Mail" required>
+            </div>
+            <div>
+                <label for="login-password">Passwort</label>
+                <input type="password" name="password" id="login-password" placeholder="Enter Password" required>
+            </div>
 
-    <div id="search-results"></div>
+            <button type="submit">Anmelden</button>
+        </form>
+
+        <p>Noch kein Konto? <a href="register.html" id="register">Jetzt registrieren</a></p>
+        <p id="login-message"></p>
 
     </main>
-
-<script src="app.js"></script>
+    
+<script src="login.js"></script>
 </body>
 </html>

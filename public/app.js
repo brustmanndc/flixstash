@@ -2,6 +2,18 @@ const searchForm = document.getElementById('search');
 const searchId = document.getElementById ('search-id');
 const searchMsg= document.getElementById ('search-message');
 const searchResults = document.getElementById('search-results');
+const logoutButton = document.getElementById('logout-button');
+const token = localStorage.getItem('token');
+
+if(!token) {
+    location.href = '/';
+}
+
+logoutButton.addEventListener('click', () => {
+    localStorage.removeItem('token');
+
+    location.href = '/';
+});
 
 searchForm.addEventListener('submit', async (event) =>  {
     event.preventDefault();
