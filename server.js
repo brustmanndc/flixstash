@@ -7,6 +7,9 @@ const express = require('express');
 const { connectToDatabase } = require ('./db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { watch } = require('node:fs');
+const { release } = require('node:os');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 const PORT = 3000;
@@ -225,7 +228,7 @@ app.get('/api/movie-details', async (req,res) => {
         return res.json({
                 id: entry.id,
                 title: entry.title || entry.name,
-                type: entry.media_type,
+                type: type,
                 release_date: entry.release_date || entry.first_air_date,
                 overview: entry.overview,
                 poster_path: entry.poster_path
@@ -251,6 +254,192 @@ async function startServer() {
         process.exit(1);
     }
 };
+
+app.post('/api/watchlist', verifyToken, async (req,res) => {
+    const {
+        movieId,
+        type,
+        title,
+        posterPath,
+        releaseDate,
+        overview
+    } = req.body;
+
+    if(!movieId || !['movie', 'tv'].includes(type) || !title) {
+        return res.status(400).json ({
+            error: 'ungültige Daten'
+        });
+    }
+
+    try {
+        const watchlist = db.collection('watchlist');
+
+        const existingEntry = await watchlist.findOne({
+            userId: req.user.sub,
+            movieId: Number(movieId),
+            type: type
+        })
+
+        if (existingEntry) {
+            return res.status(400).json({
+                error: 'Dieser Titel ist bereits in deiner Watchlist!'
+            });
+        }
+
+        await watchlist.insertOne({
+            userId: req.user.sub,
+            movieId: Number(movieId),
+            type: type,
+            title: title,
+            posterPath: posterPath || null,
+            releaseDate: releaseDate || null,
+            status: 'want_to_watch',
+            rating: null,
+            addedAt: new Date(),
+            overview: overview || null
+        });
+
+        return res.status(200).json({
+            message: 'Titel erfolgreich zu Watchlist hinzugefügt'
+        });
+    } catch (error) {
+        console.error('Watchlist Fehler:', error.message);
+
+        return res.status(500).json({
+            error: 'Titel konnte nicht hinzugefügt werden'
+        });
+    }
+});
+
+app.get('/api/watchlist', verifyToken, async (req, res) => {
+    try {
+        const watchlist = db.collection('watchlist');
+
+        const entries = await watchlist.find({
+            userId: req.user.sub
+        }).toArray();
+
+        return res.json({
+            watchlist: entries
+        });
+    } catch (error) {
+        console.log('Fehler beim laden der Watchlist:', error);
+
+        return res.status(500).json({
+            error: 'Watchlist konnte nicht geladen werden'
+        });
+    }
+});
+
+app.delete('/api/watchlist/:id', verifyToken, async (req, res) => {
+    const entryId = req.params.id;
+
+    if(!ObjectId.isValid(entryId)) {
+        return res.status(400).json({
+            error: 'Ungültige Wacthlist ID'
+        });
+    }
+
+    try {
+        const watchlist = db.collection('watchlist');
+
+        const result = await watchlist.deleteOne({
+            _id: new ObjectId(entryId),
+            userId: req.user.sub
+        });
+
+        if (result.deletedCount === 0) {
+            return res.status(400).json({
+                error: 'Eintrag nicht gefunden'
+            });
+        }
+
+        return res.json({
+            message: 'Titel wurde aus deiner Watchlist gelöscht'
+        });
+    }catch(error) {
+        console.log('Fehler beim Löschen:', error);
+
+        return res.status(500).json({
+            error: 'Titel konnte nicht gelöscht werden'
+        });
+    }
+});
+
+app.patch('/api/watchlist/:id', verifyToken, async(req, res) => {
+    const entryId = req.params.id;
+    const { status, rating } = req.body;
+
+    const statusValues = [
+        'want_to_watch',
+        'currently_watching',
+        'completed',
+        'dropped'
+    ];
+
+    if (!ObjectId.isValid(entryId)) {
+        return res.status(400).json({
+            error: 'Ungültige ID'
+        });
+    }
+
+    if (status === undefined && rating === undefined) {
+        return res.status(400).json({
+            error: 'Keine Änderung bei Status oder Rating'
+        });
+    }
+
+    if (status !== undefined && !statusValues.includes(status)) {
+        return res.status(400).json({
+            error: 'ungültiger Status'
+        });
+    }
+
+    if (rating !== undefined && (!Number.isInteger(rating) || rating < 1 || rating > 5)) {
+        return res.status(400).json({
+            error: 'Ungültige Bewertung'
+        });
+    }
+    
+    try {
+        const watchlist = db.collection('watchlist');
+        
+        const updateData = {};
+            if (status !== undefined) {
+                updateData.status = status;
+            }
+            if (rating !== undefined){
+                updateData.rating = rating;
+             }
+
+        const result = await watchlist.updateOne(
+            {
+                _id: new ObjectId(entryId), 
+                userId: req.user.sub
+            },
+            {
+                $set: updateData
+            }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(400).json({
+                error: 'Watchlist Eintrag nicht gefunden'
+            });
+        }
+
+        return res.json({
+            message: 'Watchlist Eintrag erfolgreich geändert'
+        });
+
+    } catch(error){
+        console.log('Fehler beim Ändern vom Status:', error.message);
+
+        return res.status(500).json({
+            error: 'Status konnte nicht geändert werden'
+        });
+    }
+});
 
 startServer();
 

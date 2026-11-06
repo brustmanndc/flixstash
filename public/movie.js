@@ -30,7 +30,46 @@ try {
         <h1>${title}</h1>
         <p>${year}</p>
         <p>${overview}</p>
+        <button id='add-watchlist-button'>Zur Watchlist hinzufügen</button>
+        <p id="watchlist-msg"></p>
     `;
+
+    const addWatchlistButton = document.getElementById('add-watchlist-button');
+    const watchlistMessage = document.getElementById('watchlist-msg');
+
+    addWatchlistButton.addEventListener('click', async () => {
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await fetch ('/api/watchlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    movieId: data.id,
+                    type: data.type,
+                    title: data.title,
+                    posterPath: data.poster_path,
+                    releaseDate: data.release_date,
+                    overview: data.overview
+                }) 
+            });
+
+            const result = await response.json();
+            if(!response.ok) {
+                watchlistMessage.textContent = result.error;
+                return;
+            }
+
+            watchlistMessage.textContent = result.message;
+        } catch (error) {
+            console.log('Watchlist Fehler:', error);
+            watchlistMessage.textContent = 'Verbindung zum Server fehlgeschlagen';
+        }
+    });
+
 } catch (error) {
     console.log('Fehler:', error);
     movieDetails.textContent = 'Verbindung zum Server ist fehlgeschlagen';

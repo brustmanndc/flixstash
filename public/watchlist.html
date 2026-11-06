@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>FlixStash</title>
+</head>
+<body>
+
+    <header>
+        <h1>FlixStash</h1>
+
+        <nav>
+            <a href="/home.html">Suche</a>
+            <a href="/watchlist.html">Meine Watchlist</a>
+            <button id="logout-button">Logout</button>
+        </nav>
+        
+    </header>
+
+    <main>
+        <h2>Meine Watchlist</h2>
+        <button id="surprise-button">Surprise Me!</button>
+        <div id="surprise-result"></div>
+
+        <div id="watchlist-filter">
+            <button class="filter-button active" data-status="all">Alle</button>
+            <button class="filter-button" data-status="want_to_watch">Want to Watch</button>
+            <button class="filter-button" data-status="currently_watching">Currently Watching</button>
+            <button class="filter-button" data-status="dropped">Dropped</button>
+            <button class="filter-button" data-status="completed">Completed</button>
+        </div>
+
+        <div id="watchlist-results">
+            <p>Watchlist noch leer</p>
+        </div>
+    </main>
+  
+   <script src="watchlist.js"></script> 
+</body>
+</html>
