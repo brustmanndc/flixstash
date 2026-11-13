@@ -1,0 +1,23 @@
+<header>
+  <h1>FlixStash</h1>
+  <p>Deine Watchlist für Filme und Serien</p>
+
+  <nav>
+    <button onclick="location.href = '/home'">Dashboard</button>
+    <button onclick="location.href = '/watchlist'">Meine Watchlist</button>
+    <button id="logout-button">Logout</button>
+  </nav>
+</header>
+
+<div id="logout-popup" class="logout-popup">
+  <div class="logout-popup-content">
+    <h2>Möchtest du dich wirklich aus FlixStash abmelden?</h2>
+
+    <div class="logout-popup-buttons">
+      <button id="cancel-logout">Zurück</button>
+      <button id="confirm-logout">Logout</button>
+    </div>
+  </div>
+</div>
+
+<script src="/header.js"></script>

@@ -1,0 +1,20 @@
+{
+  "short_name": "FlixStash",
+  "name": "FlixStash",
+  "icons": [
+    {
+      "src": "/images/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0b1026",
+  "background_color": "#0b1026"
+}

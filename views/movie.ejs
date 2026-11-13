@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <title>FlixStash – Filmdetails</title>
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <div id="movie-details">
+        <div id="movie-poster"></div>
+        <div id="movie-main-info"></div>
+        <div id="movie-extra-info"></div>
+      </div>
+
+      <a href="/watchlist">Zurück</a>
+
+      <div id="poster-popup" class="poster-popup">
+        <button id="close-poster-popup" class="close-poster-popup">X</button>
+
+        <img id="popup-poster" src="" />
+      </div>
+    </main>
+
+    <script src="movie.js"></script>
+  </body>
+</html>

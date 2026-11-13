@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <title>FlixStash</title>
+  </head>
+
+  <body>
+    <main>
+      <h2>Willkommen auf FlixStash</h2>
+      <p>Watchlist für Filme und Serien</p>
+
+      <form id="login-form">
+        <div>
+          <label for="login-email">E-Mail</label>
+          <input
+            type="email"
+            name="email"
+            id="login-email"
+            placeholder="Enter E-Mail"
+            required
+          />
+        </div>
+        <div>
+          <label for="login-password">Passwort</label>
+          <input
+            type="password"
+            name="password"
+            id="login-password"
+            placeholder="Enter Password"
+            required
+          />
+        </div>
+
+        <button type="submit">Anmelden</button>
+      </form>
+
+      <p>
+        Noch kein Konto?
+        <a href="/register" id="register">Jetzt registrieren</a>
+      </p>
+      <p id="login-message"></p>
+    </main>
+    <script src="/login.js"></script>
+  </body>
+</html>

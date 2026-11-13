@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <title>FlixStash</title>
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <h2>Willkommen auf FlixStash</h2>
+
+      <div id="search">
+        <input
+          type="text"
+          id="search-id"
+          placeholder="Nach Filmen oder Serien suchen..."
+        />
+      </div>
+
+      <div id="live-search-results"></div>
+
+      <p id="search-message"></p>
+
+      <div id="search-results"></div>
+
+      <div id="surprise">
+        <h2>Sage deinem Backlog den Kampf an!</h2>
+        <button id="surprise-button">Surprise Me!</button>
+      </div>
+
+      <div id="surprise-popup" class="surprise-popup">
+        <div id="surprise-result" class="surprise-popup-content"></div>
+      </div>
+    </main>
+
+    <section id="watchlist-statistics">
+      <h2>Deine Watchlist auf einen Blick:</h2>
+
+      <div class="statistics-container">
+        <div class="statistic">
+          <h3>Completed</h3>
+          <p id="stat-completed">0</p>
+        </div>
+
+        <div class="statistic">
+          <h3>Want to Watch</h3>
+          <p id="stat-want-to-watch">0</p>
+        </div>
+
+        <div class="statistic">
+          <h3>Currently Watching</h3>
+          <p id="stat-currently-watching">0</p>
+        </div>
+
+        <div class="statistic">
+          <h3>Dropped</h3>
+          <p id="stat-dropped">0</p>
+        </div>
+      </div>
+    </section>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
